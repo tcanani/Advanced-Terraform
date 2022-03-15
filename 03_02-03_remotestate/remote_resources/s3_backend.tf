@@ -1,4 +1,7 @@
 # //////////////////////////////
+# THIS FILE IS TO BE USED WITH TERRAFORM ON TERMINAL (CLI) SINCE IT HAS CHANGED/UPDATED
+# THE OTHER FILE IS THE ACTUAL BACKUP THAT IS BEING USED WITH JENKINS FOR PIPELINE TESTING
+# //////////////////////////////
 # VARIABLES
 # //////////////////////////////
 variable "aws_access_key" {}
@@ -31,11 +34,23 @@ data "aws_iam_user" "terraform" {
 resource "aws_s3_bucket" "tcanani-tfremotestate" {
   bucket = var.bucket_name
   force_destroy = true
-  acl = "private"
+}
 
-  versioning {
-    enabled = true
+resource "aws_s3_bucket_acl" "tcanani-tfremotestate-acl" {
+  bucket = aws_s3_bucket.tcanani-tfremotestate.id
+  acl = "private"
+}
+
+resource "aws_s3_bucket_versioning" "tcanani-tfremotestate-versionig" {
+  bucket = aws_s3_bucket.tcanani-tfremotestate.id
+
+  versioning_configuration {
+    status = "Enabled"
   }
+}
+
+resource "aws_s3_bucket_policy" "tcanani-tfremotestate-policy" {
+  bucket = aws_s3_bucket.tcanani-tfremotestate.id
 
   # Grant read/write access to the terraform user
   policy = <<EOF
