@@ -6,9 +6,9 @@ node {
     }
     stage('Download') {
         // Download Terraform
-        sh label: '', script: 'curl https://releases.hashicorp.com/terraform/0.12.29/terraform_0.12.29_linux_amd64.zip \
-            --output terraform_0.12.29_darwin_amd64.zip \
-             && unzip terraform_0.12.29_darwin_amd64.zip'
+        sh label: '', script: 'curl https://releases.hashicorp.com/terraform/1.1.7/terraform_1.1.7_linux_amd64.zip \
+            --output terraform_1.1.7_linux_amd64.zip \
+             && unzip terraform_1.1.7_linux_amd64.zip'
     }
     stage('Backend-Init') {
         // Initialize the Terraform configuration
@@ -42,10 +42,10 @@ node {
                         string(credentialsId: 'AWS_SECRET_KEY', variable: 'aws_secret_key')]) {
                             dir('03_02-03_remotestate') {
                                 sh script: '../terraform init \
-                                            -backend-config="bucket=red30-tfstate" \
-                                            -backend-config="key=red30/ecommerceapp/app.state" \
+                                            -backend-config="bucket=tcanani-tfstate" \
+                                            -backend-config="key=tcanani/ecommerceapp/app.state" \
                                             -backend-config="region=us-east-2" \
-                                            -backend-config="dynamodb_table=red30-tfstatelock" \
+                                            -backend-config="dynamodb_table=tcanani-tfstatelock" \
                                             -backend-config="access_key=$aws_access_key" \
                                             -backend-config="secret_key=$aws_secret_key"'
                             }
