@@ -1,0 +1,7 @@
+terraform init \
+    -backend-config="bucket=tcanani-tfstate" \
+    -backend-config="key=tcanani/ecommerceapp/app.state" \
+    -backend-config="region=us-east-2" \
+    -backend-config="dynamodb_table=tcanani-tfstatelock" \
+    -backend-config="access_key=AKIAQH2F2RLK5NKU7M53" \
+    -backend-config="secret_key=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"
